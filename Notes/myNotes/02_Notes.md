@@ -150,5 +150,35 @@ There are also "Bit field" & "pragma(pack)" to manipulate the size of a object t
 + [memory alignment](https://hackmd.io/@sysprog/c-memory?type=view)
 + [Bit Field](https://en.cppreference.com/w/cpp/language/bit_field)
 
+## P.65 Use LSB to save memory
+Something like the following:
+```
+class Node{
+public:
+
+private:	
+	int		_val;
+	Node*	_next;	// 64-bit machine, 8 byte for a pointer,
+					// so the address value would be multiple of 8.
+					// That means the last three bit of the value would all be zeros.
+					// To take advantage of that, we could use the last three bits to store other info.
+					// <29: address ><3: other, ex. "visited" in graph>
+};
+class List{
+public:
+	void setMark(Node *p){
+		p |= 0x1;				// this might not compile, be careful with the type
+	}
+	bool visited(Node *p){
+		return p & 0x1;			// this might not compile, be careful with the type
+	}
+	void getNext(){
+		head = (head->_next & (~size_t(0) << 3)); // mask the last three bit
+	}
+private:
+	Node *head;
+};
+```
+
 ## P.72 will not produce 'compile error' on my machine.
 
