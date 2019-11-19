@@ -258,7 +258,7 @@ using namespace std;
 
 struct Compare{
 	virtual bool operator () (int, int) const = 0;
-//	virtual bool operator () (int i, int j){ return i < j;}// const = 0;
+//	virtual bool operator () (int i, int j){ return i < j;}
 };
 
 struct Less : public Compare{
@@ -285,7 +285,55 @@ int main()
 	return 0;
 }
 
-// compilation error: no matching sort(int [10], int*, Compare)
-// could compile if modify the pure virtual function but not as expected.
-// because f would cast sent obj to Compare and thus do the Compare::().
+/* error message:
+/opt/rh/devtoolset-7/root/usr/include/c++/7/bits/stl_algo.h:4856:5: error: invalid abstract parameter type ‘Compare’
+practice3-8.cpp:5:8: note:   because the following virtual functions are pure within ‘Compare’:
+ struct Compare{
+        ^~~~~~~
+practice3-8.cpp:6:15: note:     virtual bool Compare::operator()(int, int) const
+  virtual bool operator () (int i, int j) const = 0; //{ return i < j;}// const = 0;
+               ^~~~~~~~
+still don't know how to fix.
+*/
 ```
++ This works and the behavior is as expected but doesn't solve the problem.
+```c++=
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Compare{
+	virtual bool operator () (int , int ) const = 0; 
+};
+
+struct Less : public Compare{
+	bool operator () (int i, int j) const { return (i < j); }
+};
+
+struct Greater: public Compare{
+	bool operator () (int i, int j) const { return (i > j); }
+};
+/*
+void f(const Compare &c)
+{
+	int arr[10] = {4,2,6,7,1,3,5,9,8,0};
+	::sort<int*>(arr+0, arr+10, c);
+	for(int i = 0; i < 10; i++){
+		cout << arr[i] << endl;
+	}
+}
+*/
+int main()
+{
+//	f(Less());
+//	f(Greater());
+	int arr[10] = {4,2,6,7,1,3,5,9,8,0};
+	::sort<int*>(arr, arr+10, Less());
+	for(int i = 0; i<10; i++){ cout << arr[i] << endl; }
+	cout << "====\n";
+	::sort<int*>(arr, arr+10, Greater());
+	for(int i = 0; i<10; i++){ cout << arr[i] << endl; }
+	return 0;
+}
+```
+
