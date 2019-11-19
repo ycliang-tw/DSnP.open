@@ -116,6 +116,10 @@ int main()
 ```
 + summary: Explicitly call base constructor, define virtual base destructor
 
+## virtual pointer & virtual table
+###### reference: [c++ virtual](https://medium.com/theskyisblue/c-%E4%B8%AD%E9%97%9C%E6%96%BC-virtual-%E7%9A%84%E5%85%A9%E4%B8%89%E4%BA%8B-1b4e2a2dc373), [c++ vptr vtable](https://blog.csdn.net/bigtree_3721/article/details/77506763)
+
+
 ## P.34~36 casting base class pointer to derived class
 
 ## P.37 access specifier in derived class
@@ -128,6 +132,8 @@ int main()
 + function overloading: different function prototype
 + polymorphism: identical function prototype, different namespace
 
+####### reference: [Basic ruls and idioms for operator overloading](https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading)
+
 ## P.46 Function prototype when overloading operator
 ###### reference: [list of operator](https://en.cppreference.com/w/cpp/language/operators), [wiki](https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B), [overloading member access operators](https://stackoverflow.com/questions/8777845/overloading-member-access-operators-c)
 
@@ -138,6 +144,7 @@ int main()
 ## P.53~54
 + "ostream& operator >>(ostream &)" is a member function of class ostream, thus we cannot make it a member function of our class.
 + we are able to overload it as a global function, "friend" it for access permission to the private data.
+###### reference: [overloading input/output operators](https://medium.com/@nonuruzun/overloading-input-output-operators-in-c-a2a74c5dda8a)
 
 ## Overloading resolution
 ###### reference: [why overloading is not ambiguous](https://www.geeksforgeeks.org/why-overriding-both-the-global-new-operator-and-the-class-specific-operator-is-not-ambiguous/), [overloading resolution](https://www.geeksforgeeks.org/why-overriding-both-the-global-new-operator-and-the-class-specific-operator-is-not-ambiguous/), [priority](https://stackoverflow.com/questions/25862633/c-why-member-function-has-priority-over-global-function), [why const reference](https://stackoverflow.com/questions/21485366/why-we-use-reference-return-in-assignment-operator-overloading-and-not-at-plus-m)
