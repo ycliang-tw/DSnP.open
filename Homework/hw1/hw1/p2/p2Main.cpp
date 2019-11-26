@@ -7,6 +7,7 @@
 ****************************************************************************/
 #include <iostream>
 #include <string>
+#include <map>
 #include "p2Json.h"
 
 using namespace std;
@@ -15,7 +16,6 @@ int main()
 {
    Json json;
 
-   // Read in the csv file. Do NOT change this part of code.
    string jsonFile;
    cout << "Please enter the file name: ";
    cin >> jsonFile;
@@ -27,8 +27,21 @@ int main()
    }
 
    // TODO read and execute commands
-   // cout << "Enter command: ";
+   string command;
    while (true) {
-      // cout << "Enter command: ";
+		cout << "Enter command: ";
+		cin >> command;
+		if(command == "EXIT" || cin.eof()){
+			break;
+		}else if(command == "ADD"){
+			string key;
+			int value;
+			cin >> key >> value;
+			json.add(key, value);
+		}else{
+			json.exec(command);
+		}
    }
+   return 0;
 }
+//	commands = {"PRINT", "SUM", "AVE", "MAX", "MIN", "ADD", "EXIT"};
