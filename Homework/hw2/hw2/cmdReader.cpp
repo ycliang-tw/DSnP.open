@@ -53,8 +53,8 @@ CmdParser::readCmdInt(istream& istr)
                                resetBufAndPrintPrompt(); break;
          case ARROW_UP_KEY   : moveToHistory(_historyIdx - 1); break;
          case ARROW_DOWN_KEY : moveToHistory(_historyIdx + 1); break;
-         case ARROW_RIGHT_KEY: /* TODO */ break;
-         case ARROW_LEFT_KEY : /* TODO */ break;
+         case ARROW_RIGHT_KEY: moveBufPtr(_readBufPtr+1); /* TODO */ break;
+         case ARROW_LEFT_KEY : moveBufPtr(_readBufPtr-1); /* TODO */ break;
          case PG_UP_KEY      : moveToHistory(_historyIdx - PG_OFFSET); break;
          case PG_DOWN_KEY    : moveToHistory(_historyIdx + PG_OFFSET); break;
          case TAB_KEY        : /* TODO */ break;
@@ -86,6 +86,20 @@ bool
 CmdParser::moveBufPtr(char* const ptr)
 {
    // TODO...
+   if(ptr < _readBuf || ptr > _readBufEnd){
+		mybeep();
+		return false;
+   }else if(ptr < _readBufPtr){
+		while(ptr != _readBufPtr){	
+			cout << "\b";
+			_readBufPtr--;
+		}
+	}else if(ptr > _readBufPtr){
+		while(ptr != _readBufPtr){	
+			cout << *_readBufPtr;
+			_readBufPtr++;
+		}
+	}
    return true;
 }
 
@@ -136,6 +150,14 @@ CmdParser::insertChar(char ch, int repeat)
 {
    // TODO...
    assert(repeat >= 1);
+	memmove(_readBufPtr+repeat, _readBufPtr, _readBufEnd - _readBufPtr);
+	// memmove does not check for any terminating null character in source, so do that! or else seg fault.
+	_readBufEnd += repeat;
+	*_readBufEnd = 0;
+	for(int i = 0; i < repeat; i++){
+		*(_readBufPtr++) = ch;
+		cout << ch;
+	}
 }
 
 // 1. Delete the line that is currently shown on the screen
